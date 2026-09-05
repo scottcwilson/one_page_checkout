@@ -6,7 +6,7 @@
 // This module is included by tpl_modules_opc_billing_address.php and tpl_modules_opc_shipping_address.php and
 // provides a common-formatting for those two address-blocks.
 //
-// Last updated: OPC v2.6.4
+// Last updated: OPC v2.7.0
 //
 
 // -----
@@ -117,6 +117,13 @@ if (zen_config('ACCOUNT_SUBURB') === 'true') {
 
 echo $_SESSION['opc']->formatAddressElement($which, 'city', $address['city'], ENTRY_CITY, TABLE_ADDRESS_BOOK, 'entry_city', zen_config('ENTRY_CITY_MIN_LENGTH'), ENTRY_CITY_TEXT) . $clear_both;
 
+$field_name = "zone_country_id[$which]";
+$field_id = "country-$which";
+?>
+    <label class="inputLabel" for="<?= $field_id ?>"><?= ENTRY_COUNTRY ?></label>
+    <?= zen_get_country_list($field_name, $address['country'], "id=\"$field_id\"") . 
+        (!empty(ENTRY_COUNTRY_TEXT) ? '<span class="alert">' . ENTRY_COUNTRY_TEXT . '</span>' : '') . $clear_both ?>
+<?php
 if (zen_config('ACCOUNT_STATE') === 'true') {
     $state_zone_id = "stateZone-$which";
     $zone_field_name = "zone_id[$which]";
@@ -138,13 +145,6 @@ if (zen_config('ACCOUNT_STATE') === 'true') {
 
 echo $_SESSION['opc']->formatAddressElement($which, 'postcode', $address['postcode'], ENTRY_POST_CODE, TABLE_ADDRESS_BOOK, 'entry_postcode', zen_config('ENTRY_POSTCODE_MIN_LENGTH'), ENTRY_POST_CODE_TEXT) . $clear_both;
 
-$field_name = "zone_country_id[$which]";
-$field_id = "country-$which";
-?>
-    <label class="inputLabel" for="<?= $field_id ?>"><?= ENTRY_COUNTRY ?></label>
-    <?= zen_get_country_list($field_name, $address['country'], "id=\"$field_id\"") . 
-        (!empty(ENTRY_COUNTRY_TEXT) ? '<span class="alert">' . ENTRY_COUNTRY_TEXT . '</span>' : '') . $clear_both ?>
-<?php
 // -----
 // Starting with OPC v2.6.0, the customer's phone number can be changed during
 // the checkout process.  It's displayed **only** for the billing address block.
