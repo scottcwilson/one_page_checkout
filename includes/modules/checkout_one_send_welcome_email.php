@@ -3,7 +3,7 @@
 // Part of the One-Page Checkout plugin, provided under GPL 2.0 license by lat9 (cindy@vinosdefrutastropicales.com).
 // Copyright (C) 2017-2026, Vinos de Frutas Tropicales.  All rights reserved.
 //
-// Last updated: OPC v2.6.3
+// Last updated: OPC v2.7.0
 //
 if (defined('FILENAME_CREATE_ACCOUNT_SEND_EMAIL')) {
     require DIR_WS_MODULES . zen_get_module_directory(FILENAME_CREATE_ACCOUNT_SEND_EMAIL);
@@ -14,11 +14,17 @@ if (defined('FILENAME_CREATE_ACCOUNT_SEND_EMAIL')) {
     // build the message content
     $name = $firstname . ' ' . $lastname;
 
+    if (ACCOUNT_GENDER === 'true') {
+        $email_text = sprintf(($gender === 'm') ? EMAIL_GREET_MR : EMAIL_GREET_MS, $lastname);
+    } else {
+        $email_text = sprintf(EMAIL_GREET_NONE, $firstname);
+    }
+    $html_msg['EMAIL_GREETING'] = str_replace('\n', '', $email_text);
     $html_msg['EMAIL_FIRST_NAME'] = $firstname;
     $html_msg['EMAIL_LAST_NAME'] = $lastname;
 
     // initial welcome
-    $email_text .=  EMAIL_WELCOME;
+    $email_text .= EMAIL_WELCOME;
     $html_msg['EMAIL_WELCOME'] = str_replace('\n', '', EMAIL_WELCOME);
 
     $new_signup_discount_coupon = zen_config('NEW_SIGNUP_DISCOUNT_COUPON');
